@@ -1,0 +1,30 @@
+{
+  "name": "wscaffold",
+  "version": "1.0.0",
+  "description": "w-脚手架",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atomicmm/wscaffold.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atomicmm/wscaffold/issues"
+  },
+  "homepage": "https://github.com/atomicmm/wscaffold#readme",
+  "dependencies": {
+    "boom": "^4.2.0",
+    "debug": "^2.5.2",
+    "lodash": "^4.17.3"
+  },
+  "peerDependencies": {
+    "koa": "^2.0.0",
+    "koa-router": "^7.0.0",
+    "graphql": "^0.7.2",
+    "sequelize": "^3.24.6"
+  }
+}
