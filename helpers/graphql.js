@@ -45,7 +45,25 @@ function buildGraphQLSchema(schemaPath) {
     const schema = buildSchema(finalSchema)
     debug('schema initialed...', printSchema(schema))
 
-    return schema
+    return req => {
+        const startTime = Date.now()
+        return {
+            schema,
+            rootValue,
+            pretty: true,
+            extensions() {
+                return { runTime: Date.now() - startTime }
+            },
+            formatError(error) {
+                return {
+                    message: error.message,
+                    locations: error.locations,
+                    stack: error.stack
+                }
+            }
+        }
+
+    }
 }
 
 module.exports = { buildGraphQLSchema }
