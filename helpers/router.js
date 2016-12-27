@@ -1,6 +1,7 @@
 const debug = require('debug')('wscaffold')
 
-const { groupBy, find, forEach } = require('lodash')
+const { parse } = require('path')
+const { groupBy, find, forEach} = require('lodash')
 const Router = require('koa-router')
 const { readJSModule } = require('../utils')
 
@@ -19,24 +20,31 @@ const CONFIG_SUFFIX = '.config.js'
  */
 function buildRouter(app, routerPath) {
 
-    const modules = groupBy(readJSModule(routerPath))
+    const findBaseName = fullPath => {
+        const item = parse(fullPath).base
+        return item.substr(0, item.indexOf('.'))
+    }
+
+    const modules = groupBy(readJSModule(routerPath), findBaseName)
     debug(`find ${Object.keys(modules).length} router-modules in ${routerPath}`)
 
     forEach(modules, (files, baseName) => {
         //debug(`begin to build router moudle [${baseName}]`)
-        let configFile = files.find(file => file === `${baseName}${CONFIG_SUFFIX}`)
-        let baseFile = files.find(file => file === `${baseName}${BASE_SUFFIX}`)
+        let configFile = files.find(file => file.endsWith(baseName+CONFIG_SUFFIX))
+        let baseFile = files.find(file => file.endsWith(baseName+BASE_SUFFIX))
 
         // router instance
         let config = {}
         let moduleMiddlewares = [] //整个模块的全局middlewares
 
         if (configFile) {
-            config = require(path.resolve(rootPath, configFile))
+            config = require(configFile)
         }
 
         const router = ('prefix' in config) ?
-            (new Router({ prefix: config.prefix })) :
+            (new Router({
+                prefix: config.prefix
+            })) :
             (new Router())
 
         // middlewares栈顺序：config.middlewares->config.prepre->config.validation->handler
@@ -45,7 +53,7 @@ function buildRouter(app, routerPath) {
             moduleMiddlewares.push(...config.middlewares)
         }
 
-        const endpoints = require(path.resolve(rootPath, baseFile))
+        const endpoints = require(baseFile)
         forEach(endpoints, ep => {
             let middlewares = [...moduleMiddlewares] //单个endpoint
 
@@ -67,7 +75,7 @@ function buildRouter(app, routerPath) {
 
         app.use(router.routes())
         app.use(router.allowedMethods({
-            throw: true
+            throw :true
         }))
     })
 
@@ -79,7 +87,11 @@ function buildRouter(app, routerPath) {
  * 在配置中根据method和path搜索节点
  */
 function findByPathAndMethod(configs, path, method) {
-    return find(configs, { path, method })
+    return find(configs, {
+        path, method
+    })
 }
 
-module.exports = { buildRouter }
+module.exports = {
+    buildRouter
+}
