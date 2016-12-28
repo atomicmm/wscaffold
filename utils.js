@@ -25,3 +25,11 @@ exports.buildPageFields = itemType => `
 exports.readJSModule = modulePath => readdirSync(resolve(process.cwd(), modulePath))
     .filter(name => /\.js$/.test(name))
     .map(f => resolve(process.cwd(), modulePath, f))
+
+//获取客户端的真实IP
+exports.getClientIp = req => {
+    return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress
+}
