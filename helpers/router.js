@@ -2,7 +2,6 @@ const debug = require('debug')('wscaffold')
 
 const { parse } = require('path')
 const { groupBy, find, forEach} = require('lodash')
-const Router = require('koa-router')
 const { readJSModule } = require('../utils')
 
 const prepare = require('../web/middlewares/prepare-data')
@@ -19,6 +18,7 @@ const CONFIG_SUFFIX = '.config.js'
  * .config.js --->该router的配置文件(校验器，静态数据，中间件)
  */
 function buildRouter(app, routerPath) {
+    const Router = require('koa-router')
 
     const findBaseName = fullPath => {
         const item = parse(fullPath).base

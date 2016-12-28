@@ -1,5 +1,4 @@
 const debug = require('debug')('wscaffold')
-const { buildSchema, printSchema } = require('graphql')
 
 const { readJSModule } = require('../utils')
 
@@ -14,6 +13,7 @@ const { readJSModule } = require('../utils')
  * }
  */
 function buildGraphQLSchema(schemaPath) {
+    const { buildSchema, printSchema } = require('graphql')
 
     const modules = readJSModule(schemaPath)
     debug(`find ${Object.keys(modules).length} type-modules in ${schemaPath}`)
