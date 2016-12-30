@@ -43,7 +43,7 @@ function doValidate(configs, ctx) {
  */
 function validateField(value, configs, fieldName) {
     if (configs.validators) {
-        const valResult = value ? every(configs.validators, valFn => valFn(value)) : false
+        const valResult = every(configs.validators, valFn => valFn(value))
 
         //校验失败
         if (!valResult) {
