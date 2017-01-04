@@ -43,13 +43,15 @@ function buildGraphQLSchema(schemaPath) {
     }
     `
     const schema = buildSchema(finalSchema)
-    debug('schema initialed...', printSchema(schema))
+    debug('schema initialed...\n ', printSchema(schema))
+    const debug = process.env.NODE_ENV !== 'production'
 
     return req => {
         const startTime = Date.now()
         return {
             schema,
             rootValue,
+            graphiql:debug,
             pretty: true,
             extensions() {
                 return { runTime: Date.now() - startTime }
