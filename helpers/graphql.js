@@ -1,6 +1,7 @@
 const debug = require('debug')('wscaffold')
 
 const { readJSModule } = require('../utils')
+const defaultTypes = require('../helpers/graphql-common-types')
 
 /**
  * @param schemaPath graphql模块描述文件，相对于process.cwd()的路径
@@ -22,6 +23,8 @@ function buildGraphQLSchema(schemaPath) {
     let types = []
     let queriers = ['_:String']
     let mutations = ['_:String']
+
+    types.push(defaultTypes.ObjectType, defaultTypes.PageType, defaultTypes.ObjectInputType, defaultTypes.PageQueryInputType)
 
     modules.forEach(i => {
         const { type, query, mutation, resolver } = require(i)
@@ -51,7 +54,7 @@ function buildGraphQLSchema(schemaPath) {
         return {
             schema,
             rootValue,
-            graphiql:isDebugMode,
+            graphiql: isDebugMode,
             pretty: true,
             extensions() {
                 return { runTime: Date.now() - startTime }
