@@ -4,6 +4,11 @@ const ObjectType = `
         id: ID! obj: String
     }
 `
+const ResultType = `
+    type Result {
+        state: Int! msg: String data: String
+    }
+`
 
 //分页对象
 const PageType = `
@@ -29,6 +34,7 @@ const PageQueryInputType = `
 module.exports = {
     ObjectType,
     PageType,
+    ResultType,
     ObjectInputType,
     PageQueryInputType
 }
