@@ -12,6 +12,9 @@ exports.renderPage = (totalElement, offset = 0, limit = 15, items = []) => {
     }
 }
 
+//输出序列化过后的json
+exports.renderJson = obj => JSON.stringify(obj)
+
 //输出Page fields
 exports.buildPageFields = itemType => `
     totalNum:Int!

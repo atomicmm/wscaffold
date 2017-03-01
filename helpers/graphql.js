@@ -24,7 +24,7 @@ function buildGraphQLSchema(schemaPath) {
     let queriers = ['_:String']
     let mutations = ['_:String']
 
-    types.push(defaultTypes.ObjectType, defaultTypes.PageType, defaultTypes.ObjectInputType, defaultTypes.PageQueryInputType)
+    types.push(defaultTypes.ObjectType, defaultTypes.ResultType, defaultTypes.PageType, defaultTypes.ObjectInputType, defaultTypes.PageQueryInputType)
 
     modules.forEach(i => {
         const { type, query, mutation, resolver } = require(i)
